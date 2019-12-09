@@ -1,0 +1,15 @@
+{
+    "aws": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-techcloud-vuetify-aws-95133-authRole",
+            "UnauthRoleArn": "arn:aws:iam::347612567792:role/amplify-techcloud-vuetify-aws-95133-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::347612567792:role/amplify-techcloud-vuetify-aws-95133-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-techcloud-vuetify-aws-95133-deployment",
+            "UnauthRoleName": "amplify-techcloud-vuetify-aws-95133-unauthRole",
+            "StackName": "amplify-techcloud-vuetify-aws-95133",
+            "StackId": "arn:aws:cloudformation:us-east-1:347612567792:stack/amplify-techcloud-vuetify-aws-95133/651f6390-1a3b-11ea-9dc4-12cb3b0f9c64",
+            "AmplifyAppId": "d1umtpudw8478e"
+        }
+    }
+}

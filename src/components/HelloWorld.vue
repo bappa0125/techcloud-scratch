@@ -1,58 +1,99 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-container>
+    <v-layout
+      text-center
+      wrap
+    >
+  <v-data-table
+    :headers="headers"
+    :items="desserts"
+  
+    class="elevation-1"
+  ></v-data-table>
+   <v-btn small color="primary" v-on:click="addTodo()">Primary</v-btn>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
+const AWS = require('aws-sdk')
+AWS.config.update({region: 'us-east-1'});
+
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:2783b52e-9c54-4e6b-b3ca-08672a104a11'});
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
-</script>
+  data() {
+    return {
+      title: '',
+      
+ headers: [
+          {
+            text: 'Msg_Id',
+            align: 'left',
+            sortable: false,
+            value: 'msg_id',
+          },
+          { text: 'From', value: 'from' },
+          { text: 'Cc', value: 'CC' },
+          { text: 'Subject', value: 'subject' },
+          { text: 'Priority', value: 'Priority' },
+          { text: 'Department', value: 'Department' },
+        ],
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+        desserts: [
+          {
+            name: 'Frozen Yogurt',
+            from: 200,
+            cc: 6.0,
+            subject: 24,
+            priority: 4.0,
+            department: '1%',
+          },
+          {
+            name: 'Ice cream sandwich',
+            calories: 200,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            iron: '1%',
+          },
+        
+        ],
+
+        
+    }
+  },
+    methods: {
+   addTodo() {
+     this.desserts=[]
+const dynamodb =new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+console.log('The name is')
+
+dynamodb.scan({ TableName: 'emailclassification' }).promise()
+.then(
+  function(data) {
+    console.log("getting all the data from db" + data.Items);
+   let datapack=[];
+   
+  datapack = datapack.concat(data.Items);
+     //this.desserts = datapack.concat(data.Items);
+    
+    console.log(datapack)
+  datapack.forEach(element=>console.log(element.Department)
+  
+  )
+  return datapack
+  }).then((datapack)=>{
+     this.desserts=datapack
+  } )
+  .catch( 
+    function(err) {
+    console.error(err, err.stack);
+  });
+         
+    }
+  }
+
+  
+};
+</script>
