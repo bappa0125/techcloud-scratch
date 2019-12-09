@@ -19,7 +19,7 @@
 const AWS = require('aws-sdk')
 AWS.config.update({region: 'us-east-1'});
 
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'xxxxxxx'});
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:2783b52e-9c54-4e6b-b3ca-08672a104a11'});
 export default {
   name: 'HelloWorld',
   data() {
