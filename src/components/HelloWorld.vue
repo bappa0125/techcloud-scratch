@@ -1,121 +1,140 @@
-<template>
+<template >
+
+
+  <div class="my-2 text-center" >
+    <httpec2 v-on:callsteps="getResult_StepWiseResult($event)"></httpec2>
+        <!-- <v-btn small @click="getResult()">Normal</v-btn> -->
+    <!-- <v-btn
+      class="ma-2"
+      :loading="loading"
+      :disabled="loading"
+      color="secondary"
+      @click="getResult_StepWiseResult('Root','CreateSubnet')">
+      Subent Creatin
+      <template v-slot:loader>
+        <span>Getting result...</span>
+      </template>
+    </v-btn> -->
   <v-data-table
     :headers="headers"
     :items="desserts"
     class="elevation-1"
   >
-    <template v-slot:item.calories="{ item }">
-      <v-chip :color="getColor(item.calories)" dark>{{ item.calories }}</v-chip>
+  <template v-slot:items="props">
+   
+      <td class="text-xs-left">{{ props.item.steps_performed}}</td>
+      <v-chip :color="getColor(props.item.result)" dark>{{ props.item.result }}</v-chip>
+      <td class="text-xs-left">{{ props.item.user }}</td>
+      <td class="text-xs-left">{{ props.item.resource_effected }}</td>
+      <td class="text-xs-left">{{ props.item.comments }}</td>
     </template>
-  </v-data-table>
+</v-data-table>
+  </div>
 </template>
+
 <script>
-  export default {
-    data () {
-      return {
-        headers: [
+import Httpec2 from './httpec2instance'
+import axios from 'axios'
+export default {
+  name: 'Wip',
+components:{'httpec2':Httpec2},
+  data () {
+
+    
+    return {
+      loading: false,
+      user:'Root',
+        data_to_show:{},
+       temp:[],
+     headers: [
           {
-            text: 'Dessert (100g serving)',
+            text: 'Steps Perfromed',
             align: 'left',
             sortable: false,
-            value: 'name',
+            value: 'steps_performed',
           },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' },
+          { text: 'Result', value: 'result' },
+          { text: 'User', value: 'user' },
+          { text: 'Resource Effected', value: 'resource_effected' },
+          { text: 'Comments', value: 'comments' },
+        
         ],
         desserts: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
+            steps_performed: 'Steps perfromed',
+            result: 'Pass or Fail for this step',
+            user: 'User who took the test',
+            resource_effected: 'Number of resources created for this step',
+            comments: 'Any comments',
           },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
-          },
-        ],
-      }
-    },
-    methods: {
-      getColor (calories) {
-        if (calories > 400) return 'red'
-        else if (calories > 200) return 'orange'
-        else return 'green'
+        
+          ],
+    }
+  },
+
+  mounted () {
+  },
+
+  methods: {
+   getResult(){
+    this.loading=true
+     axios.create({
+      baseURL: 'https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=Root&eventname=CreateSubnet',
+      timeout: 15000
+    }).get().then((data)=> {
+       console.log(data.data.body)
+
+       this.loading=false
+    }
+     )
+
+     
+   
+
+  },
+   getResult_StepWiseResult(eventname){
+   
+   console.log(eventname)
+    //this.desserts=[]
+    
+    this.user='Root'
+    this.loading=true
+    this.data_to_show={}
+    console.log(this.user)
+     axios.create({
+      baseURL: `https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=${this.user}&eventname=${eventname}`,
+      timeout: 15000
+    }).get().then((data)=> {
+    
+       this.data_to_show= {
+            'steps_performed': data.data.body.event,
+            'result':  data.data.body.status,
+            'user': data.data.body.user,
+            'resource_effected': data.data.body.total_resource_affected,
+            'comments':  data.data.body.message,
+          }
+        
+          this.temp.push(this.data_to_show)
+          this.desserts=this.temp
+       this.loading=false
+    }
+     )
+  },
+  getColor (result) {
+        if (result =='Fail') return 'red'
+        else if (result =='Pass') return 'green'
+        else return 'dark'
       },
-    },
-  }
+
+
+  },
+   /////////end of method list  
+   
+  
+}
 </script>
+
+<style scoped>
+
+</style>
+
