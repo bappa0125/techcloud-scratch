@@ -1,99 +1,121 @@
 <template>
-  <v-container>
-    <v-layout
-      text-center
-      wrap
-    >
   <v-data-table
     :headers="headers"
     :items="desserts"
-  
     class="elevation-1"
-  ></v-data-table>
-   <v-btn small color="primary" v-on:click="addTodo()">Primary</v-btn>
-    </v-layout>
-  </v-container>
+  >
+    <template v-slot:item.calories="{ item }">
+      <v-chip :color="getColor(item.calories)" dark>{{ item.calories }}</v-chip>
+    </template>
+  </v-data-table>
 </template>
-
 <script>
-const AWS = require('aws-sdk')
-AWS.config.update({region: 'us-east-1'});
-
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:2783b52e-9c54-4e6b-b3ca-08672a104a11'});
-export default {
-  name: 'HelloWorld',
-  data() {
-    return {
-      title: '',
-      
- headers: [
+  export default {
+    data () {
+      return {
+        headers: [
           {
-            text: 'Msg_Id',
+            text: 'Dessert (100g serving)',
             align: 'left',
             sortable: false,
-            value: 'msg_id',
+            value: 'name',
           },
-          { text: 'From', value: 'from' },
-          { text: 'Cc', value: 'CC' },
-          { text: 'Subject', value: 'subject' },
-          { text: 'Priority', value: 'Priority' },
-          { text: 'Department', value: 'Department' },
+          { text: 'Calories', value: 'calories' },
+          { text: 'Fat (g)', value: 'fat' },
+          { text: 'Carbs (g)', value: 'carbs' },
+          { text: 'Protein (g)', value: 'protein' },
+          { text: 'Iron (%)', value: 'iron' },
         ],
-
         desserts: [
           {
             name: 'Frozen Yogurt',
-            from: 200,
-            cc: 6.0,
-            subject: 24,
-            priority: 4.0,
-            department: '1%',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            iron: '1%',
           },
           {
             name: 'Ice cream sandwich',
-            calories: 200,
+            calories: 237,
             fat: 9.0,
             carbs: 37,
             protein: 4.3,
             iron: '1%',
           },
-        
+          {
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            iron: '7%',
+          },
+          {
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            iron: '8%',
+          },
+          {
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            iron: '16%',
+          },
+          {
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            iron: '0%',
+          },
+          {
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            iron: '2%',
+          },
+          {
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            iron: '45%',
+          },
+          {
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            iron: '22%',
+          },
+          {
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            iron: '6%',
+          },
         ],
-
-        
-    }
-  },
+      }
+    },
     methods: {
-   addTodo() {
-     this.desserts=[]
-const dynamodb =new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
-console.log('The name is')
-
-dynamodb.scan({ TableName: 'emailclassification' }).promise()
-.then(
-  function(data) {
-    console.log("getting all the data from db" + data.Items);
-   let datapack=[];
-   
-  datapack = datapack.concat(data.Items);
-     //this.desserts = datapack.concat(data.Items);
-    
-    console.log(datapack)
-  datapack.forEach(element=>console.log(element.Department)
-  
-  )
-  return datapack
-  }).then((datapack)=>{
-     this.desserts=datapack
-  } )
-  .catch( 
-    function(err) {
-    console.error(err, err.stack);
-  });
-         
-    }
+      getColor (calories) {
+        if (calories > 400) return 'red'
+        else if (calories > 200) return 'orange'
+        else return 'green'
+      },
+    },
   }
-
-  
-};
 </script>
