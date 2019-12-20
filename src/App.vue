@@ -1,60 +1,74 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    
+    <div>
+    <v-navigation-drawer v-model="sidebar" class="primary" app>
+       <v-layout column align-center>
+        <v-flex class="mt-5">
+          <v-avatar size="100">
+            <img class="text-lg-center" src="/accenture.png">
+          </v-avatar>
+          <p class="white--text subheading mt-1">AABG INDIA</p>
+        </v-flex>
+       
+      </v-layout>
+  <v-list>
+    <v-list-item v-for="item in links" :key="item.text" :to="item.route">
+      <v-list-item-action>
+        <v-icon left>{{ item.icon }}</v-icon>
+      </v-list-item-action>
+      <v-list-item-content class="white--text subheading mt-1">{{ item.text }}</v-list-item-content>
+    </v-list-item>
+  </v-list>
+</v-navigation-drawer>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+<v-app-bar class="primary" app>
+  <span class="hidden-sm-and-up">
+    <v-app-bar-nav-icon @click="sidebar = !sidebar" class="grey--text"></v-app-bar-nav-icon>
+  </span>
+    <v-toolbar-title class="white--text subheading mt-1">
+       
+        <span>AVM</span>
+      </v-toolbar-title>
+  <v-spacer></v-spacer>
+  <v-toolbar-items class="hidden-xs-only">
+    <v-btn text v-for="item in links" :key="item.text" :to="item.route">
+      <!-- <v-icon left dark>{{ item.icon }}</v-icon> -->
+      {{ item.text }}
+    </v-btn>
+  </v-toolbar-items>
+</v-app-bar>
+  </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
+  <v-content>
+      <router-view></router-view>
     </v-content>
+    
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+//import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
+  appTitle: 'Awesome App',
 
-  components: {
-    HelloWorld,
+  // components: {
+  //   HelloWorld,
+  // },
+
+ data() {
+    return {
+      sidebar: false,
+      links: [
+        { icon: 'dashboard', text: 'Dashboard', route: '/' },
+        { icon: 'folder', text: 'My Projects', route: '/projects' },
+        { icon: 'person', text: 'Team', route: '/team' },
+        { icon: 'person', text: 'HellowWorld', route: '/HelloWorld' },
+      ],
+    
+    }
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>
