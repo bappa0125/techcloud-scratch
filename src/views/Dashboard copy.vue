@@ -26,13 +26,20 @@
         <v-btn color="primary" dark v-on="on" v-on:click="getAccountDetails()">Goto Account</v-btn>
       </template>
       <v-card>
-        <v-card-title>{{ project.name }}</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text style="height: 300px;">
-          
-        </v-card-text>
-        <v-divider></v-divider>
-        {{tmp}}
+        <v-list-item three-line>
+      <v-list-item-content>
+        <div class="overline mb-4">{{account_description['accconttype']}}</div>
+        <v-list-item-title class="headline mb-1">{{account_description['accconttype']}}</v-list-item-title>
+        <v-list-item-subtitle>{{account_description['accountdescription']}}</v-list-item-subtitle>
+      </v-list-item-content>
+
+      <v-list-item-avatar
+        tile
+        size="80"
+        color="grey"
+      ></v-list-item-avatar>
+       </v-list-item>
+       
         
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="launchAccount()">Launch Account</v-btn>
@@ -66,11 +73,11 @@ export default {
   
     return {
       projects: [
-        { name: 'VPC, Subent,EC2 ', difficulty: 'Moderate', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-        { name: 'DynamoDb,API  Gateway, Lambda', difficulty: 'Moderate', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-        { name: 'S3 Cloudfront', difficulty: 'Critical', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-        { name: 'Code Commit,Code Deploy,Code Star', difficulty: 'Moderate', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-        { name: 'SQS and SNS', difficulty: 'Easy', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg'}
+        { name: 'VPC, Subent,EC2 ', difficulty: 'Moderate', src: '/avatar-10.png' },
+        { name: 'DynamoDb,API  Gateway, Lambda', difficulty: 'Moderate', src: '/avatar-9.png' },
+        { name: 'S3 Cloudfront', difficulty: 'Critical', src: '/avatar-8.png' },
+        { name: 'Code Commit,Code Deploy,Code Star', difficulty: 'Moderate', src: '/avatar-7.png' },
+        { name: 'SQS and SNS', difficulty: 'Easy', src: '/avatar-6.png'}
 
       ],
        dialog: false,
@@ -86,19 +93,19 @@ export default {
     getAccountDetails(){
       var account_description={}
      console.log(account_description)
-       return new Promise( function(resolve) {
+     
        
         axios.get('https://dx5biqoyme.execute-api.us-east-1.amazonaws.com/Stage/getAccount?accountname=ec2public')
             .then( function(json) {
             var tmp=JSON.parse(json.data.body)
-               
+             //console.log(tmp)  
                this.account_description=tmp
 
                 // The data from the request is available in a .then block
                 // We return the result using resolve.
-                resolve(json);
-            });
-    });
+              
+            
+    }.bind(this));
    
     },
 
@@ -106,9 +113,14 @@ export default {
      launchAccount(){
   
     return new Promise( function(resolve) {
-        axios.get('https://dx5biqoyme.execute-api.us-east-1.amazonaws.com/Stage/getAccount?accountname=ec2public')
+        axios.get('https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?uName=subrata')
             .then( function(json) {
-
+                 console.log(json)
+                  console.log(json['data']['body']['url'])
+                  var url=json['data']['body']['url']
+                 // window.location.href = url
+                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+                  window.open(url, "_blank", strWindowFeatures);
                 // The data from the request is available in a .then block
                 // We return the result using resolve.
                 resolve(json);

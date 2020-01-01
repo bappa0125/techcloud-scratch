@@ -62,10 +62,10 @@ export default {
     return {
       sidebar: false,
       links: [
-        { icon: 'dashboard', text: 'Dashboard', route: '/' },
+        { icon: 'dashboard', text: 'Accounts', route: '/' },
         { icon: 'folder', text: 'My Projects', route: '/projects' },
-        { icon: 'person', text: 'Team', route: '/team' },
-        { icon: 'person', text: 'HellowWorld', route: '/HelloWorld' },
+        { icon: 'person', text: 'UserDetails', route: '/team' },
+        { icon: 'person', text: 'Results', route: '/HelloWorld' },
       ],
     
     }

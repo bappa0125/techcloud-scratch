@@ -1,53 +1,112 @@
 <template>
-  <div class="projects">
-    <h1 class="subheading grey--text">Projects</h1>
 
-    <v-container class="my-5">
-      <v-expansion-panel>
-        <v-expansion-panel-content v-for="project in myProjects" :key="project.title">
-          <div slot="header" class="py-1">{{ project.title }}</div>
-          <v-card>
-            <v-card-text class="px-4 grey--text">
-              <div class="font-weight-bold">Due by {{ project.due }}</div>
-              <div>{{ project.content }}</div>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-container>
-    
+  <div class="projects">
+
+   <template>
+         <v-container fill-height fluid>
+  <v-row align="center">
+    <v-row justify="space-around">
+      <!-- <v-switch v-model="valid" class="ma-4" label="Valid" readonly></v-switch>
+      <v-switch v-model="lazy" class="ma-4" label="Lazy"></v-switch> -->
+    </v-row> 
+    <v-form
+      ref="form"
+      v-model="valid"
+      :lazy-validation="lazy"
+    >
+      <v-text-field
+        v-model="name"
+        :counter="10"
+        :rules="nameRules"
+        label="Name"
+        required
+      ></v-text-field>
+
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label="E-mail"
+        required
+      ></v-text-field>
+
+      <v-select
+        v-model="select"
+        :items="items"
+        :rules="[v => !!v || 'Item is required']"
+        label="Item"
+        required
+      ></v-select>
+
+      <v-checkbox
+        v-model="checkbox"
+        :rules="[v => !!v || 'You must agree to continue!']"
+        label="Do you agree?"
+        required
+      ></v-checkbox>
+
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="mr-4"
+        @click="validate"
+      >
+        Validate
+      </v-btn>
+
+      <v-btn
+        color="error"
+        class="mr-4"
+        @click="reset"
+      >
+        Reset Form
+      </v-btn>
+
+      <v-btn
+        color="warning"
+        @click="resetValidation"
+      >
+        Reset Validation
+      </v-btn>
+    </v-form>
+  </v-row>
+</template>
+
   </div>
 </template>
 
 <script>
-import db from '@/fb'
+
 
 export default {
   data() {
     return {
-      projects: []
+      valid: true,
+      name: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      select: null,
+      items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+      ],
+      checkbox: false,
+      lazy: false,
     }
   },
   computed: {
-    myProjects() {
-      return this.projects.filter(project => {
-        return project.person === 'The Net Ninja' && project.status != 'complete'
-      })
-    }
+    
   },
   created() {
-    db.collection('projects').onSnapshot(res => {
-      const changes = res.docChanges();
-
-      changes.forEach(change => {
-        if (change.type === 'added') {
-          this.projects.push({
-            ...change.doc.data(),
-            id: change.doc.id
-          })
-        }  
-      })
-    })
+   
   }
 }
 </script>
