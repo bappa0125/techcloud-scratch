@@ -3,7 +3,7 @@
   <div class="projects">
 
    <template>
-         <v-container fill-height fluid>
+         
   <v-row align="center">
     <v-row justify="space-around">
       <!-- <v-switch v-model="valid" class="ma-4" label="Valid" readonly></v-switch>
