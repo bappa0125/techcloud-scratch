@@ -4,27 +4,26 @@
 
    <template>
          
-  <v-row align="center">
-    <v-row justify="space-around">
-      <!-- <v-switch v-model="valid" class="ma-4" label="Valid" readonly></v-switch>
-      <v-switch v-model="lazy" class="ma-4" label="Lazy"></v-switch> -->
-    </v-row> 
+  <v-row align="center" justify="center">
+    
     <v-form
       ref="form"
       v-model="valid"
       :lazy-validation="lazy"
     >
       <v-text-field
-        v-model="name"
+        v-model="Username"
         :counter="10"
         :rules="nameRules"
-        label="Name"
+        label="Username"
+        prepend-icon="supervised_user_circle"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="email"
         :rules="emailRules"
+         prepend-icon="email"
         label="E-mail"
         required
       ></v-text-field>
@@ -33,14 +32,14 @@
         v-model="select"
         :items="items"
         :rules="[v => !!v || 'Item is required']"
-        label="Item"
+        label="Roles"
         required
       ></v-select>
 
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
+        label="Parmanent Account?"
         required
       ></v-checkbox>
 
@@ -48,9 +47,9 @@
         :disabled="!valid"
         color="success"
         class="mr-4"
-        @click="validate"
+        @click="createAccount"
       >
-        Validate
+        Create Acccount
       </v-btn>
 
       <v-btn
@@ -63,9 +62,9 @@
 
       <v-btn
         color="warning"
-        @click="resetValidation"
+        @click="createAccount()"
       >
-        Reset Validation
+        create Account
       </v-btn>
     </v-form>
   </v-row>
@@ -76,15 +75,19 @@
 
 <script>
 
-
+import axios from 'axios'
 export default {
   data() {
     return {
       valid: true,
-      name: '',
+      
+      Username: '',
+      isparmanent:'true',
+      policyname:'DynamoDBSpecificTable',
+
       nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+        v => !!v || 'choose user namr',
+        v => (v && v.length <= 10) || 'username  must be less than 10 characters',
       ],
       email: '',
       emailRules: [
@@ -93,15 +96,47 @@ export default {
       ],
       select: null,
       items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
+        'DynamoDBSpecificTable',
+        'Ec2AttachDetachVolume',
+        'Ec2FullaccessSpecificRegion',
+        'Ec2LaunchInSpecificSubnet',
       ],
       checkbox: false,
       lazy: false,
     }
   },
+  methods: {
+      createAccount () {
+        if (this.$refs.form.validate()) {
+         console.log(this.Username)
+          console.log(this.email)
+
+         axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&email=${this.email}&isparmanent=${this.isparmanent}&policyname=${this.select}`)
+            .then( function(json) {
+                 console.log(json)
+                 console.log('Account has been created')
+                  console.log(json['data']['body']['url'])
+                  var url=json['data']['body']['url']
+                 // window.location.href = url
+                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+                  window.open(url, "_blank", strWindowFeatures);
+                // The data from the request is available in a .then block
+                // We return the result using resolve.
+                 this.loader = null
+                //resolve(json);
+            }.bind(this));
+        }
+      },
+      reset () {
+        console.log(this.Username)
+          console.log(this.email)
+        this.$refs.form.reset()
+         
+      },
+      resetValidation () {
+        this.$refs.form.resetValidation()
+      },
+    },
   computed: {
     
   },
