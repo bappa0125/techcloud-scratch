@@ -1,7 +1,15 @@
 <template >
-
+  
 
   <div class="my-2 text-center" >
+    <v-text-field
+        v-model="Username"
+        :counter="10"
+        :rules="nameRules"
+        label="Choose an Username for the result of the assginment EC2 instance creation"
+        prepend-icon="supervised_user_circle"
+        required
+      ></v-text-field>
     <httpec2 v-on:callsteps="getResult_StepWiseResult($event)"></httpec2>
         <!-- <v-btn small @click="getResult()">Normal</v-btn> -->
     <!-- <v-btn
@@ -46,6 +54,12 @@ components:{'httpec2':Httpec2},
       user:'Root',
         data_to_show:{},
        temp:[],
+       role:'Ec2instancecreationregionspecific',
+        nameRules: [
+        v => !!v || 'User name is mandetory',
+        v => (v && v.length <= 10) || 'username  must be less than 10 characters',
+      ],
+      Username:"",
      headers: [
           {
             text: 'Steps Perfromed',
@@ -79,8 +93,8 @@ components:{'httpec2':Httpec2},
    getResult(){
     this.loading=true
      axios.create({
-      baseURL: 'https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=Root&eventname=CreateSubnet',
-      timeout: 15000
+      baseURL: 'https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=Root&eventname=CreateSubnet&',
+      timeout: 30000
     }).get().then((data)=> {
        console.log(data.data.body)
 
@@ -102,8 +116,8 @@ components:{'httpec2':Httpec2},
     this.data_to_show={}
     console.log(this.user)
      axios.create({
-      baseURL: `https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=${this.user}&eventname=${eventname}`,
-      timeout: 15000
+      baseURL: `https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=${this.Username}&eventname=${eventname}&role=${this.role}`,
+      timeout: 30000
     }).get().then((data)=> {
     
        this.data_to_show= {

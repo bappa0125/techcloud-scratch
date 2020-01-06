@@ -31,7 +31,7 @@
       <v-select
         v-model="select"
         :items="items"
-        :rules="[v => !!v || 'Item is required']"
+        :rules="[v => !!v || 'Roles is required']"
         label="Roles"
         required
       ></v-select>
@@ -84,6 +84,7 @@ export default {
       Username: '',
       isparmanent:'true',
       policyname:'DynamoDBSpecificTable',
+    
 
       nameRules: [
         v => !!v || 'choose user namr',
@@ -111,18 +112,10 @@ export default {
          console.log(this.Username)
           console.log(this.email)
 
-         axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&email=${this.email}&isparmanent=${this.isparmanent}&policyname=${this.select}`)
-            .then( function(json) {
+         axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&email=${this.email}&isparmanent=${this.isparmanent}&policyname=${this.select}`).then( function(json) {
                  console.log(json)
                  console.log('Account has been created')
-                  console.log(json['data']['body']['url'])
-                  var url=json['data']['body']['url']
-                 // window.location.href = url
-                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-                  window.open(url, "_blank", strWindowFeatures);
-                // The data from the request is available in a .then block
-                // We return the result using resolve.
-                 this.loader = null
+                 
                 //resolve(json);
             }.bind(this));
         }

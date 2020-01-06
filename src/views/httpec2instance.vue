@@ -1,6 +1,6 @@
 <template>
   <div class="my-2 text-center" >
-     <v-btn small @click="getResult()">Full Result</v-btn>
+     <!-- <v-btn small @click="getResult()">Full Result</v-btn> -->
   <v-data-table
     :headers="headers"
     :items="desserts"
@@ -68,7 +68,7 @@
             description: 'User will launch the EC2 instance and install httpd there and configure http server ofer there and then configure thte security group',
             difficulty: 'Moderate',
             area: 'infrastructure',
-            eventname:'CreateEc2Intance',
+            eventname:'RunInstances',
           
           },
         

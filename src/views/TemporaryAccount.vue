@@ -91,7 +91,10 @@ export default {
   
     return {
       loader: null,
-     username:'Root',
+     username:'',
+     isparmanent:'false',
+   rolename:"Ec2instancecreationregionspecific",
+   
   loading: false,
       projects: [
         { name: 'VPC, Subent,EC2 ', difficulty: 'Moderate', src: '/avatar-10.png' },
@@ -137,11 +140,12 @@ export default {
 
        
     
-        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?uName=${this.username}`)
+        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
             .then( function(json) {
+              console.log('inside the promise')
                  console.log(json)
-                  console.log(json['data']['body']['url'])
-                  var url=json['data']['body']['url']
+                  console.log(json['data']['url'])
+                  var url=json['data']['url']
                  // window.location.href = url
                   var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
                   window.open(url, "_blank", strWindowFeatures);

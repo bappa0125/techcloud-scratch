@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Dashboard from './views/Dashboard.vue'
-import Projects from './views/Projects.vue'
-import Team from './views/Team.vue'
-import HelloWorld from './views/HelloWorld.vue'
+import TemporaryAccount from './views/TemporaryAccount.vue'
+import UserDetails from './views/UserDetails.vue'
+import PermanentAccount from './views/PermanentAccount.vue'
+import AssignmentResult from './views/AssignmentResult.vue'
 
 Vue.use(Router)
 
@@ -13,25 +13,25 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      component: Dashboard
+      name: 'TemporaryAccount',
+      component: TemporaryAccount
     },
     
     {
-      path: '/team',
-      name: 'team',
-      component: Team
+      path: '/PermanentAccount',
+      name: 'PermanentAccount',
+      component: PermanentAccount
     },
     {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/AssignmentResult',
+      name: 'AssignmentResult',
+      component: AssignmentResult
     },
     
     {
-      path: '/Projects',
-      name: 'Projects',
-      component: Projects
+      path: '/UserDetails',
+      name: 'UserDetails',
+      component: UserDetails
     }
 
   ]
