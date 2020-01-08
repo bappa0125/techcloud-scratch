@@ -51,10 +51,14 @@
         :value="n"
       ></v-radio>
     </v-radio-group> -->
-        <v-text-field
-            label="Pick Username" v-model="username"
-            placeholder="Username"
-          ></v-text-field>
+      <v-text-field
+        v-model="Username"
+        :counter="10"
+        :rules="nameRules"
+        label="Username"
+        prepend-icon="supervised_user_circle"
+        required
+      ></v-text-field>
        
         
         <v-card-actions>
@@ -91,10 +95,15 @@ export default {
   
     return {
       loader: null,
-     username:'',
+     Username:'',
      isparmanent:'false',
    rolename:"Ec2instancecreationregionspecific",
    
+    nameRules: [
+        v => !!v || 'choose user namr',
+        v => (v && v.length <= 10) || 'username  must be less than 10 characters',
+        
+      ],
   loading: false,
       projects: [
         { name: 'VPC, Subent,EC2 ', difficulty: 'Moderate', src: '/avatar-10.png' },
@@ -130,9 +139,8 @@ export default {
               
             
     }.bind(this));
-   
     },
-
+   
 
      launchAccount(){
        const l = this.loader
@@ -140,7 +148,7 @@ export default {
 
        
     
-        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
+        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
             .then( function(json) {
               console.log('inside the promise')
                  console.log(json)

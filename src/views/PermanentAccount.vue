@@ -11,6 +11,19 @@
       v-model="valid"
       :lazy-validation="lazy"
     >
+     <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+    >
+      {{ text }}
+      <v-btn
+        color="red"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
       <v-text-field
         v-model="Username"
         :counter="10"
@@ -19,7 +32,8 @@
         prepend-icon="supervised_user_circle"
         required
       ></v-text-field>
-
+    
+    
       <v-text-field
         v-model="email"
         :rules="emailRules"
@@ -36,29 +50,7 @@
         required
       ></v-select>
 
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Parmanent Account?"
-        required
-      ></v-checkbox>
-
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="createAccount"
-      >
-        Create Acccount
-      </v-btn>
-
-      <v-btn
-        color="error"
-        class="mr-4"
-        @click="reset"
-      >
-        Reset Form
-      </v-btn>
+   
 
       <v-btn
         color="warning"
@@ -80,7 +72,9 @@ export default {
   data() {
     return {
       valid: true,
-      
+      multiLine: true,
+      snackbar: false,
+      text: 'I\'m a multi-line snackbar.',
       Username: '',
       isparmanent:'true',
       policyname:'DynamoDBSpecificTable',
@@ -111,8 +105,28 @@ export default {
         if (this.$refs.form.validate()) {
          console.log(this.Username)
           console.log(this.email)
+           axios.get(`https://azp9dxyx92.execute-api.us-east-1.amazonaws.com/Stage/getAccount?username=${this.Username}`)
+            .then( function(json) {
+              console.log('inside the promise')
+              console.log(json)
+              if (json['data']['msg']=="user does not exists")
+                 return true
+                 else 
+                 return false
+                //resolve(json);
+            }.bind(this)).then(function(json) {
+              console.log(json)
+              if (json)
+              {
+              axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&email=${this.email}&isparmanent=${this.isparmanent}&policyname=${this.select}`)
+              this.text='Account created successfully mail has been sent with details'
+              this.snackbar = true}
+              else 
+              {this.text='username allready existits pick a different one '
+              this.snackbar = true
+              }
 
-         axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&email=${this.email}&isparmanent=${this.isparmanent}&policyname=${this.select}`).then( function(json) {
+              }.bind(this)) .then( function(json) {
                  console.log(json)
                  console.log('Account has been created')
                  
@@ -126,6 +140,19 @@ export default {
         this.$refs.form.reset()
          
       },
+      getuser(){
+        const l = this.loader
+        this[l] = !this[l]
+        axios.get(`https://azp9dxyx92.execute-api.us-east-1.amazonaws.com/Stage/getAccount?username=${this.Username}`)
+            .then( function(json) {
+              console.log('inside the promise')
+              console.log(json)
+                //resolve(json);
+            }.bind(this));
+             this.loader = null
+             },
+
+
       resetValidation () {
         this.$refs.form.resetValidation()
       },
@@ -138,3 +165,41 @@ export default {
   }
 }
 </script>
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
