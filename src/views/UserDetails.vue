@@ -1,6 +1,20 @@
 <template>
   <div class="team">
+    
     <h1 class="subheading grey--text">Get User Details</h1>
+     <div class="small">
+       
+    <line-chart :chart-data="datacollection"></line-chart>
+    <div class="my-2">
+       <v-text-field
+            label="Pick an user for the result"
+            single-line v-model="user"
+          ></v-text-field>
+        <v-btn small color="primary" @click="fillData()">result</v-btn>
+         
+      </div>
+   
+  </div>
 
     <v-container class="my-5">
 
@@ -42,11 +56,17 @@
 
 <script>
 import axios from 'axios'
+import LineChart from '../LineChart'
+
 export default {
+   
   data() {
  
     return {
-        data_to_show:{},
+           datacollection: null,
+     
+    
+            data_to_show:{},
       team: [
          { name: 'VPC, Subent,EC2 ', role: 'Moderate', avatar: '/avatar-10.png' },
         { name: 'DynamoDb,API  Gateway, Lambda', role: 'Moderate', avatar: '/avatar-9.png' },
@@ -106,7 +126,65 @@ export default {
     }.bind(this))
 
 
-    }
-  }
+    },
+       fillData () {
+
+          axios.create({
+      baseURL: `https://f584b6h9i2.execute-api.us-east-1.amazonaws.com/Stage/get_user_stats?username=${this.user}`,
+      timeout: 15000
+    }).get().then(function(data) {
+       console.log(data)
+       console.log(data['data']['response']['Items'][0]['assignment'])
+       //var assignments=data['data']['response']['Items'][0]['assignment']
+      //  var a =  ['machinelearning','devops','ec2publicinstance','ec2publicinstance', 'lambdaapigateway'];
+      var a=data['data']['response']['Items'][0]['assignment']
+var result = { };
+for(var i = 0; i < a.length; ++i) {
+    if(!result[a[i]])
+        result[a[i]] = 0;
+    ++result[a[i]];
+}
+console.log(result);
+console.log(Object.keys(result));
+console.log(Object.values(result));
+       //this.desserts.eventname=data['data']['result']['ResultSet']['Rows']['Data'][0]['VarCharValue']
+      //    this.data_to_show= {
+      //       'User':'test',
+      //       'eventname':  data['data']['result']['ResultSet']['Rows']['Data'][0]['VarCharValue'],
+            
+      //     }
+        
+      //     this.temp.push(this.data_to_show)
+      //     this.desserts=this.temp
+      //  this.loading=false
+    this.datacollection = {
+          labels:Object.keys(result),
+          datasets: [
+            {
+              
+              backgroundColor: '#f87979',
+              data: Object.values(result)
+            }
+            
+          ]
+        }
+
+
+       
+    }.bind(this))
+
+        
+      },
+      getRandomInt () {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      }
+  },
+    mounted () {
+      this.fillData()
+  },
+   components: {
+      LineChart
+    },
+
 }
 </script>

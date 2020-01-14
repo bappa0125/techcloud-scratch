@@ -41,13 +41,15 @@
         label="E-mail"
         required
       ></v-text-field>
-
+      
       <v-select
         v-model="select"
         :items="items"
         :rules="[v => !!v || 'Roles is required']"
         label="Roles"
         required
+      
+        
       ></v-select>
 
    
@@ -90,12 +92,13 @@ export default {
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
       select: null,
-      items: [
-        'DynamoDBSpecificTable',
-        'Ec2AttachDetachVolume',
-        'Ec2FullaccessSpecificRegion',
-        'Ec2LaunchInSpecificSubnet',
-      ],
+      // items: [
+      //   'DynamoDBSpecificTable',
+      //   'Ec2AttachDetachVolume',
+      //   'Ec2FullaccessSpecificRegion',
+      //   'Ec2LaunchInSpecificSubnet',
+      // ],
+      items: [],
       checkbox: false,
       lazy: false,
     }
@@ -141,6 +144,7 @@ export default {
          
       },
       getuser(){
+        console.log('inside get users ')
         const l = this.loader
         this[l] = !this[l]
         axios.get(`https://azp9dxyx92.execute-api.us-east-1.amazonaws.com/Stage/getAccount?username=${this.Username}`)
@@ -156,11 +160,27 @@ export default {
       resetValidation () {
         this.$refs.form.resetValidation()
       },
+
+      getRoles(){
+        console.log('inside policies')
+    axios.get(`https://wjbq1137aj.execute-api.us-east-1.amazonaws.com/Stage/getRoles`)
+            .then( function(json) {
+              console.log('inside the promise')
+              console.log(json)
+              console.log(json['data']['response'])
+              this.items=json['data']['response']
+                //resolve(json);
+            }.bind(this))
+
+            return this.items
+  },
     },
   computed: {
-    
+
+  
   },
   created() {
+    this.getRoles()
    
   }
 }

@@ -21,12 +21,13 @@
    <v-card-actions>
     <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" scrollable max-width="300px" :retain-focus="false">
+    <v-dialog v-model="dialog" scrollable fullscreen :retain-focus="false">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" v-on:click="getAccountDetails()">Goto Account</v-btn>
+        <v-btn color="primary" dark v-on="on" v-on:click="getAccountDetails()">Goto Assignment</v-btn>
       </template>
       <v-card>
         <v-list-item five-line>
+          
       <v-list-item-content>
         <div class="overline mb-4">{{account_description['accconttype']}}</div>
         <v-list-item-title class="headline mb-1">{{account_description['accconttype']}}</v-list-item-title>
@@ -102,7 +103,7 @@ export default {
     nameRules: [
         v => !!v || 'choose user namr',
         v => (v && v.length <= 10) || 'username  must be less than 10 characters',
-        
+
       ],
   loading: false,
       projects: [
