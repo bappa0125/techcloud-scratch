@@ -1,5 +1,7 @@
 <template>
   <div class="team">
+   
+        
    <h1 class="display-1">Launch an EC2 instance in your own VPC and install httpd .</h1>
 <p class="subtitle-headline-1">In this exercise, you are supposed to do the below steps</p>
 <p class="subtitle-headline-1">&nbsp; &nbsp; 1. Create a VPC</p>
@@ -12,18 +14,65 @@
 <p class="subtitle-headline-1">&nbsp; &nbsp; 8. Install httpd in the instance&nbsp;</p>
 <p class="subtitle-headline-1">&nbsp; &nbsp; 9. Make sure you can access the apache test page from browser</p>
 <p class="subtitle-headline-1">&nbsp;</p>
+    <v-card>
+<v-text-field
+        v-model="Username"
+        :counter="10"
+     
+        label="Username"
+        prepend-icon="supervised_user_circle"
+        required
+      ></v-text-field>
+       
+        
+        <v-card-actions>
+          <v-btn color="blue darken-1" 
+       @click="launchAccount()">Launch Account</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
   </div>
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
 export default {
   data() {
  
     return {
+       loader: null,
+     Username:'',
+     isparmanent:'false',
+   //rolename:"Ec2instancecreationregionspecific",
+   rolename:'iamhandson',
         
   }
 
+},
+methods:{
+     launchAccount(){
+       const l = this.loader
+        this[l] = !this[l]
+
+       
+    
+        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
+            .then( function(json) {
+              console.log('inside the promise')
+                 console.log(json)
+                  console.log(json['data']['url'])
+                  var url=json['data']['url']
+                 // window.location.href = url
+                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+                  window.open(url, "_blank", strWindowFeatures);
+                // The data from the request is available in a .then block
+                // We return the result using resolve.
+                 this.loader = null
+                //resolve(json);
+            }.bind(this));
+   
+
+    }
 }
 }
 </script>

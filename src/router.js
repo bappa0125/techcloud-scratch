@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import TemporaryAccount from './views/TemporaryAccount.vue'
+import Assignments from './views/Assignments.vue'
 import UserDetails from './views/UserDetails.vue'
 import PermanentAccount from './views/PermanentAccount.vue'
 import AssignmentResult from './views/AssignmentResult.vue'
 import Ec2publicinstance from './Assignments/Ec2publicinstance'
+import Iam from './Assignments/Iam'
 
 Vue.use(Router)
 
@@ -14,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'TemporaryAccount',
-      component: TemporaryAccount
+      name: 'Assignments',
+      component: Assignments
     },
     
     {
@@ -38,6 +39,11 @@ export default new Router({
       path: '/Ec2publicinstance',
       name: 'Ec2publicinstance',
       component: Ec2publicinstance
+    },
+    {
+      path: '/Iam',
+      name: 'Iam',
+      component: Iam
     }
   ]
 })
