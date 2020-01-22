@@ -5,6 +5,8 @@ import UserDetails from './views/UserDetails.vue'
 import PermanentAccount from './views/PermanentAccount.vue'
 import AssignmentResult from './views/AssignmentResult.vue'
 
+import { authGuard } from "./auth/authGuard";
+
 Vue.use(Router)
 
 export default new Router({
@@ -14,24 +16,28 @@ export default new Router({
     {
       path: '/',
       name: 'TemporaryAccount',
-      component: TemporaryAccount
+      component: TemporaryAccount,
+      beforeEnter: authGuard
     },
     
     {
       path: '/PermanentAccount',
       name: 'PermanentAccount',
-      component: PermanentAccount
+      component: PermanentAccount,
+      beforeEnter: authGuard
     },
     {
       path: '/AssignmentResult',
       name: 'AssignmentResult',
-      component: AssignmentResult
+      component: AssignmentResult,
+      beforeEnter: authGuard
     },
     
     {
       path: '/UserDetails',
       name: 'UserDetails',
-      component: UserDetails
+      component: UserDetails,
+      beforeEnter: authGuard
     }
 
   ]
