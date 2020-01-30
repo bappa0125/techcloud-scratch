@@ -13,9 +13,9 @@
        
         
         <v-card-actions>
-          <v-btn color="blue darken-1" 
+          <v-btn color="blue" 
        @click="launchAccount()">Launch Account</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue" text @click="dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     
@@ -36,7 +36,7 @@ export default {
      Username:'',
      isparmanent:'false',
    //rolename:"Ec2instancecreationregionspecific",
-   rolename:'iamhandson',
+   rolename:'',
    
     nameRules: [
         v => !!v || 'choose user namr',
@@ -86,12 +86,13 @@ export default {
      launchAccount(){
        const l = this.loader
         this[l] = !this[l]
-
+        //this.rolename=this.Username+'IamAssignmentRole'
+        this.rolename='iamhandson'
+        
        
-    
-        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
-            .then( function(json) {
-              console.log('inside the promise')
+          axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`).then(
+              function(json) {
+              console.log('inside the second function')
                  console.log(json)
                   console.log(json['data']['url'])
                   var url=json['data']['url']
@@ -101,9 +102,43 @@ export default {
                 // The data from the request is available in a .then block
                 // We return the result using resolve.
                  this.loader = null
-                //resolve(json);
-            }.bind(this));
+                      }.bind(this))
+                //resolve(js
+
+
+       //////////////////////////////////////////////////////////////
+    
+        // axios.get(`https://qrd8oqthl2.execute-api.us-east-1.amazonaws.com/Stage/createRoles?username=${this.Username}`)
+        //     .then( (json)=>{
+        //       console.log(json['data']['msg'])
+        //       // if (json['data']['msg']=='rolenotcreated')
+        //       if ((json['data']['msg']=='rolenotcreated' )||(json['data']['msg']=='rolecreated'))
+        //       {
+
+        //     axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`).then(
+        //       function(json) {
+        //       console.log('inside the second function')
+        //          console.log(json)
+        //           console.log(json['data']['url'])
+        //           var url=json['data']['url']
+        //          // window.location.href = url
+        //           var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+        //           window.open(url, "_blank", strWindowFeatures);
+        //         // The data from the request is available in a .then block
+        //         // We return the result using resolve.
+        //          this.loader = null
+        //         //resolve(json);
+        //     }.bind(this))
    
+
+        //       }
+        //       else 
+
+        //       console.log('some issues with account creation')
+        //     })
+             
+          
+          
 
     }
 

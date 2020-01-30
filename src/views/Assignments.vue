@@ -23,7 +23,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" scrollable fullscreen :retain-focus="false">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" v-on:click="getAccountDetails(project.name)">Goto Assignment</v-btn>
+        <v-btn color="primary" dark v-on="on" v-on:click="gotoAssignment(project.name)">Goto Assignment</v-btn>
       </template>
       <v-card>
         <v-list-item five-line>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 import router from '../router'
 export default {
 
@@ -119,7 +119,7 @@ export default {
     }
   },
   methods:{
-    getAccountDetails(payload){
+    gotoAssignment(payload){
       console.log(payload)
       router.push({ name: payload });
       var account_description={}
@@ -140,29 +140,29 @@ export default {
     },
    
 
-     launchAccount(){
-       const l = this.loader
-        this[l] = !this[l]
+    //  launchAccount(){
+    //    const l = this.loader
+    //     this[l] = !this[l]
 
        
     
-        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
-            .then( function(json) {
-              console.log('inside the promise')
-                 console.log(json)
-                  console.log(json['data']['url'])
-                  var url=json['data']['url']
-                 // window.location.href = url
-                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-                  window.open(url, "_blank", strWindowFeatures);
-                // The data from the request is available in a .then block
-                // We return the result using resolve.
-                 this.loader = null
-                //resolve(json);
-            }.bind(this));
+    //     axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
+    //         .then( function(json) {
+    //           console.log('inside the promise')
+    //              console.log(json)
+    //               console.log(json['data']['url'])
+    //               var url=json['data']['url']
+    //              // window.location.href = url
+    //               var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+    //               window.open(url, "_blank", strWindowFeatures);
+    //             // The data from the request is available in a .then block
+    //             // We return the result using resolve.
+    //              this.loader = null
+    //             //resolve(json);
+    //         }.bind(this));
    
 
-    }
+    // }
 
 
     

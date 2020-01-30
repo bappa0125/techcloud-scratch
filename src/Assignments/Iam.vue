@@ -2,7 +2,7 @@
 
   <div class="team">
     <div id="app">
-   <v-app dark="grey">
+   <v-app >
    
     <v-content>
   
@@ -17,7 +17,7 @@
           <v-flex xs12 sm4 class="my-4">
             <div class="text-center">
              <div class="display-3">
-    Create an IAM User's Login profile and use CLI to Login!
+    Creation of a Temporary Login profile for a junior DevOps engineer in you team
     </div>
               
       <section>
@@ -43,34 +43,39 @@
                   <v-card flat class="transparent">
                     <v-card-text class="text-center">
                       
-                      <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                      <v-icon x-large class="blue--text text--lighten-2 ">lock</v-icon>
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
-                      <div class="headline text-center">Enterprise S</div>
+                      <div class="headline text-center">IAM Basics</div>
                     </v-card-title>
-                    <v-card-text>
-                      Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
-                      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                      Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
+                    <v-card-text >
+                      <div class="subtitle-1">
+                         There is a new DevOps engineer who has just joined in your team and you need to make sure he gets AWS Access, he only need to see the EC2 instances  from CLI. Also he will need Console access.
+                      </div>
+                    
                     </v-card-text>
                      <v-expansion-panels
       
       
       multiple
     >
+
       <v-expansion-panel>
-        <v-expansion-panel-header>Panel 1</v-expansion-panel-header>
+        <v-expansion-panel-header>Create Group and Attach Policy to the group</v-expansion-panel-header>
         <v-expansion-panel-content>
-          Some content
+             The Group that you create should be of format , <strong>&lt;username&gt;</strong><span class="purple lighten-4"> Example:-your user 
+           name is <strong>test</strong>  the Group you are going to create should be of name   <strong>test</strong></span> other names are not allowed. Once you creat the Group <span class="purple lighten-4"> attach the Policy <strong>AmazonEC2ReadOnlyAccess</strong> </span>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Create User</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          The user name that you create should be of format <strong> &lt;username&gt;</strong><span class="purple lighten-4"> Example:-your user 
+           name is test the user you are going to create should be of name   test-techcloud</span> other names are not allowed
+        
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel>
-        <v-expansion-panel-header>Panel 2</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          Some content
-        </v-expansion-panel-content>
-      </v-expansion-panel>
 
       <v-expansion-panel>
         <v-expansion-panel-header>Panel 3</v-expansion-panel-header>
@@ -99,8 +104,9 @@
                   <div class="headline">Parmanent Account</div>
                 </v-card-title>
                 <v-card-text>
+                  <div class="subtitle-1">
                   For parmanenet account you will have your own credentials and you can login from multiple system 
-                  as many times as you want,it is your own AWS account with access to the services .
+                  as many times as you want,it is your own AWS account with access to the services</div>
                       <PermanentAccount></PermanentAccount>
                 </v-card-text>
               </v-card>
@@ -108,10 +114,12 @@
             <v-flex xs12 sm4 offset-sm1>
               <v-card flat class="transparent">
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="headline">Temporary Account</div>
+                  <div h2 class="headline">Temporary Account</div>
                 </v-card-title>
-                <v-card-text>
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                <v-card-text class="font-weight-light font-weight-bold">
+                    <div class="subtitle-1">
+                This a temporary account where you will be  directly navigated to AWS console, You will not have any credentials to the 
+                account .The session will be live for 18 hours (even if you close the browser or get offline)</div>
                 </v-card-text>
                 <TemporaryAccount></TemporaryAccount>
               </v-card>
@@ -139,7 +147,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 import PermanentAccount from '../views/PermanentAccount'
 import TemporaryAccount from '../views/TemporaryAccount'
 export default {
@@ -147,14 +155,7 @@ export default {
  
     return {
        loader: null,
-     Username:'',
-     isparmanent:'false',
-   //rolename:"Ec2instancecreationregionspecific",
-   rolename:'iamhandson',
-   nameRules: [
-        v => !!v || 'choose user namr',
-        v => (v && v.length <= 10) || 'username  must be less than 10 characters',
-      ],
+
 
        items: [{
       id: "1",
@@ -167,29 +168,7 @@ export default {
 
 },
 methods:{
-     launchAccount(){
-       const l = this.loader
-        this[l] = !this[l]
-
-       
-    
-        axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`)
-            .then( function(json) {
-              console.log('inside the promise')
-                 console.log(json)
-                  console.log(json['data']['url'])
-                  var url=json['data']['url']
-                 // window.location.href = url
-                  var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-                  window.open(url, "_blank", strWindowFeatures);
-                // The data from the request is available in a .then block
-                // We return the result using resolve.
-                 this.loader = null
-                //resolve(json);
-            }.bind(this));
-   
-
-    }
+  
 },
 components:{
  PermanentAccount:PermanentAccount,

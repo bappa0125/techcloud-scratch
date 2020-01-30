@@ -58,7 +58,7 @@
         color="warning"
         @click="createAccount()"
       >
-        create Account
+        Launch Account
       </v-btn>
     </v-form>
   </v-row>
@@ -161,26 +161,14 @@ export default {
         this.$refs.form.resetValidation()
       },
 
-      getRoles(){
-        console.log('inside policies')
-    axios.get(`https://wjbq1137aj.execute-api.us-east-1.amazonaws.com/Stage/getRoles`)
-            .then( function(json) {
-              console.log('inside the promise')
-              console.log(json)
-              console.log(json['data']['response'])
-              this.items=json['data']['response']
-                //resolve(json);
-            }.bind(this))
-
-            return this.items
-  },
+      
     },
   computed: {
 
   
   },
   created() {
-    this.getRoles()
+
    
   }
 }
