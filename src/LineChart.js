@@ -1,5 +1,5 @@
-import { Bar, mixins } from 'vue-chartjs'
-const { reactiveProp } = mixins
+import { Bar, mixins } from "vue-chartjs";
+const { reactiveProp } = mixins;
 
 export default {
   extends: Bar,
@@ -16,18 +16,20 @@ export default {
         display: false
       },
       scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            min: 0
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              min: 0
+            }
           }
-        }]
+        ]
       }
     }
   },
-  mounted () {
+  mounted() {
     // this.chartData is created in the mixin.
     // If you want to pass options please create a local options object
-    this.renderChart(this.chartData, this.options)
+    this.renderChart(this.chartData, this.options);
   }
-}
+};
