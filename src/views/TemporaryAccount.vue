@@ -14,7 +14,7 @@
         
         <v-card-actions>
           <v-btn color="blue" 
-       @click="launchAccount()">Launch Account</v-btn>
+       @click="launchAccount(rolename)">Launch Account</v-btn>
           <v-btn color="blue" text @click="dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -29,6 +29,8 @@ export default {
 
   account_description:{},
   username:{},
+  props:['rolename'],
+
   data() {
   
     return {
@@ -36,7 +38,7 @@ export default {
      Username:'',
      isparmanent:'false',
    //rolename:"Ec2instancecreationregionspecific",
-   rolename:'',
+ 
    
     nameRules: [
         v => !!v || 'choose user namr',
@@ -83,12 +85,14 @@ export default {
     },
    
 
-     launchAccount(){
+     launchAccount(rolename){
        const l = this.loader
         this[l] = !this[l]
         //this.rolename=this.Username+'IamAssignmentRole'
-        this.rolename='iamhandson'
-        
+       // this.rolename='iamhandson'
+        this.rolename=rolename
+
+        console.log(rolename)
        
           axios.get(`https://40gi94x7sk.execute-api.us-east-1.amazonaws.com/Stage/sts?username=${this.Username}&isparmanent=${this.isparmanent}&rolename=${this.rolename}`).then(
               function(json) {
@@ -103,7 +107,7 @@ export default {
                 // We return the result using resolve.
                  this.loader = null
                       }.bind(this))
-                //resolve(js
+               
 
 
        //////////////////////////////////////////////////////////////
