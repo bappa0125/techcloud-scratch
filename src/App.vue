@@ -62,8 +62,7 @@ export default {
     return {
       sidebar: false,
       links: [
-        { icon: 'dashboard', text: 'Teamporary Account', route: '/' },
-        { icon: 'folder', text: 'Parmanent Account', route: '/PermanentAccount' },
+        { icon: 'dashboard', text: 'Assignments', route: '/' },      
         { icon: 'person', text: 'UserDetails', route: '/UserDetails' },
         { icon: 'person', text: 'Assignment Result', route: '/AssignmentResult' },
       ],

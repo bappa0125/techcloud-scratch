@@ -51,6 +51,7 @@ components:{'httpec2':Httpec2},
     
     return {
       loading: false,
+      isparmanent:false,
       user:'Root',
         data_to_show:{},
        temp:[],
@@ -107,16 +108,17 @@ components:{'httpec2':Httpec2},
 
   },
    getResult_StepWiseResult(eventname){
-   
    console.log(eventname)
+   console.log(this.eventname)
     //this.desserts=[]
     
-    this.user='Root'
+    //this.user='Root'
     this.loading=true
+    
     this.data_to_show={}
     console.log(this.user)
      axios.create({
-      baseURL: `https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=${this.Username}&eventname=${eventname}&role=${this.role}`,
+      baseURL: `https://2pgl0fwux4.execute-api.us-east-1.amazonaws.com/Stage/hello?user=${this.Username}&eventname=${eventname}&role=${this.role}&isparmanent=${this.isparmanent}`,
       timeout: 30000
     }).get().then((data)=> {
     

@@ -17,7 +17,7 @@ export default new Router({
       path: '/',
       name: 'TemporaryAccount',
       component: TemporaryAccount,
-      beforeEnter: authGuard
+     // beforeEnter: authGuard
     },
     
     {
@@ -30,14 +30,14 @@ export default new Router({
       path: '/AssignmentResult',
       name: 'AssignmentResult',
       component: AssignmentResult,
-      beforeEnter: authGuard
+     // beforeEnter: authGuard
     },
     
     {
       path: '/UserDetails',
       name: 'UserDetails',
       component: UserDetails,
-      beforeEnter: authGuard
+     // beforeEnter: authGuard
     }
 
   ]
