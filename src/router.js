@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Assignments from './views/Assignments.vue'
+import TemporaryAccount from './views/TemporaryAccount.vue'
 import UserDetails from './views/UserDetails.vue'
 import PermanentAccount from './views/PermanentAccount.vue'
 import AssignmentResult from './views/AssignmentResult.vue'
-import Ec2publicinstance from './Assignments/Ec2publicinstance'
-import Iam from './Assignments/Iam'
+
+import { authGuard } from "./auth/authGuard";
 
 Vue.use(Router)
 
@@ -15,35 +15,30 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Assignments',
-      component: Assignments
+      name: 'TemporaryAccount',
+      component: TemporaryAccount,
+     // beforeEnter: authGuard
     },
     
     {
       path: '/PermanentAccount',
       name: 'PermanentAccount',
-      component: PermanentAccount
+      component: PermanentAccount,
+      beforeEnter: authGuard
     },
     {
       path: '/AssignmentResult',
       name: 'AssignmentResult',
-      component: AssignmentResult
+      component: AssignmentResult,
+     // beforeEnter: authGuard
     },
     
     {
       path: '/UserDetails',
       name: 'UserDetails',
-      component: UserDetails
-    },
-    {
-      path: '/Ec2publicinstance',
-      name: 'Ec2publicinstance',
-      component: Ec2publicinstance
-    },
-    {
-      path: '/Iam',
-      name: 'Iam',
-      component: Iam
+      component: UserDetails,
+     // beforeEnter: authGuard
     }
+
   ]
 })
